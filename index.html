@@ -2,53 +2,45 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clima Local</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 400px;
+        }
+        h1 { color: #333; }
+        #clima {
+            font-size: 24px;
+            color: #667eea;
+            margin-top: 20px;
+            min-height: 40px;
+        }
+        .loading {
+            color: #999;
+            font-style: italic;
+        }
+    </style>
 </head>
 <body>
-    <h1>Clima na sua Localização</h1>
-    <p id="clima">Carregando...</p>
+    <div class="container">
+        <h1>Clima na sua Localização</h1>
+        <p id="clima" class="loading">Carregando...</p>
+    </div>
 
-    <script>
-        const apiKey = '607fd0fbaee3b2eee57aa54e1e67a67a'; 
-
-        function iniciar() {
-            if (navigator.geolocation) {
-                // Solicita a geolocalização do usuário
-                navigator.geolocation.getCurrentPosition(sucesso, erro);
-            } else {
-                document.getElementById('clima').innerText = "Geolocalização não suportada.";
-            }
-        }
-
-        function sucesso(position) {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            buscarClima(lat, lon);
-        }
-
-        function erro() {
-            document.getElementById('clima').innerText = "Não foi possível obter sua localização.";
-        }
-
-        // Função para chamar a API de clima
-        async function buscarClima(lat, lon) {
-            const url = `https://api.openweathermap.org{lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=pt_br`;
-            
-            try {
-                const resposta = await fetch(url);
-                const dados = await resposta.json();
-                
-                // Exibir na tela
-                const temperatura = Math.round(dados.main.temp);
-                const descricao = dados.weather[0].description;
-                const cidade = dados.name;
-                document.getElementById('clima').innerText = `${cidade}: ${temperatura}°C, ${descricao}`;
-            } catch (error) {
-                document.getElementById('clima').innerText = "Erro ao buscar clima.";
-            }
-        }
-
-        iniciar();
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
